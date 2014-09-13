@@ -14,6 +14,7 @@
 		65F12DA819C3671800E8A4EC /* RottenTomatoesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F12DA719C3671800E8A4EC /* RottenTomatoesTests.swift */; };
 		65F12DB219C368CE00E8A4EC /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F12DB119C368CE00E8A4EC /* MoviesViewController.swift */; };
 		65F12DB419C38B5200E8A4EC /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F12DB319C38B5200E8A4EC /* MovieCell.swift */; };
+		65F12DBD19C3B59C00E8A4EC /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F12DBC19C3B59C00E8A4EC /* MovieDetailViewController.swift */; };
 		A070DC0804C648FF86C34A75 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9C7F4DAECCD4461AB2B1C56 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		65F12DB119C368CE00E8A4EC /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		65F12DB319C38B5200E8A4EC /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		65F12DBB19C3AA1800E8A4EC /* ObjC-bridging-header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ObjC-bridging-header.h"; sourceTree = "<group>"; };
+		65F12DBC19C3B59C00E8A4EC /* MovieDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
 		D9C7F4DAECCD4461AB2B1C56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				65F12DB119C368CE00E8A4EC /* MoviesViewController.swift */,
+				65F12DBC19C3B59C00E8A4EC /* MovieDetailViewController.swift */,
 				65F12DB319C38B5200E8A4EC /* MovieCell.swift */,
 				65F12D9119C3671700E8A4EC /* AppDelegate.swift */,
 				65F12D9519C3671700E8A4EC /* Main.storyboard */,
@@ -266,6 +269,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65F12DBD19C3B59C00E8A4EC /* MovieDetailViewController.swift in Sources */,
 				65F12D9219C3671700E8A4EC /* AppDelegate.swift in Sources */,
 				65F12DB219C368CE00E8A4EC /* MoviesViewController.swift in Sources */,
 				65F12DB419C38B5200E8A4EC /* MovieCell.swift in Sources */,

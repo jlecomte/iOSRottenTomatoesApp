@@ -33,7 +33,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,14 +54,24 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        performSegueWithIdentifier("Movie Detail", sender: movies[indexPath.row])
     }
-    */
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        var vc = segue.destinationViewController as MovieDetailViewController
+
+        var movie = sender as NSDictionary
+
+        vc.movieTitle = movie["title"] as String
+        vc.synopsis = movie["synopsis"] as String
+
+        var posters = movie["posters"] as NSDictionary
+        var posterUrl = posters["original"] as String
+
+        // TODO: replace '_tmb.' by '_ori.' (?)
+
+        vc.posterUrl = posterUrl
+    }
 }
