@@ -8,10 +8,14 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate, UISearchBarDelegate {
 
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+
     var movies: [NSDictionary] = []
+    var filteredMovies: [NSDictionary] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,15 +23,38 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.delegate = self
         tableView.dataSource = self
 
-        var url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=4jvsq52hmsc9vsngu6ewrqku&limit=20&country=us"
+        activityIndicator.center = view.center
+        activityIndicator.startAnimating()
+        tableView.hidden = true
+
+        var url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=4jvsq52hmsc9vsngu6ewrqku&limit=50&country=us"
 
         var request = NSURLRequest(URL: NSURL(string: url))
 
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
         (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-            var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
-            self.movies = object["movies"] as [NSDictionary]
-            self.tableView.reloadData()
+            var hasError = false
+
+            self.activityIndicator.stopAnimating()
+
+            if error == nil {
+                var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
+                if object["error"] == nil {
+                    self.movies = object["movies"] as [NSDictionary]
+                    self.tableView.reloadData()
+                } else {
+                    hasError = true
+                }
+            } else {
+                hasError = true
+            }
+
+            if hasError {
+                var alert = UIAlertController(title: "Error", message: "The Rotten Tomatoes API returned a friggin' error...", preferredStyle: UIAlertControllerStyle.Alert)
+                self.presentViewController(alert, animated: false, completion: nil)
+            } else {
+                self.tableView.hidden = false
+            }
         }
     }
 
@@ -35,14 +62,42 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.didReceiveMemoryWarning()
     }
 
+    func filterContentForSearchText(searchText: String) {
+        filteredMovies = movies.filter { (movie: NSDictionary) -> Bool in
+            let title = movie["title"] as String
+            let stringMatch = title.rangeOfString(searchText)
+            return stringMatch != nil
+        }
+    }
+
+    func searchDisplayController(controller: UISearchDisplayController, shouldReloadTableForSearchString searchString: String!) -> Bool {
+        filterContentForSearchText(searchString)
+        return true
+    }
+
+    // Needed for iOS < 8...
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 133
+    }
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
+        if tableView == searchDisplayController!.searchResultsTableView {
+            return filteredMovies.count
+        } else {
+            return movies.count
+        }
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
+        var cell = self.tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
 
-        var movie = movies[indexPath.row]
+        var movie: NSDictionary
+
+        if tableView == searchDisplayController!.searchResultsTableView {
+            movie = filteredMovies[indexPath.row]
+        } else {
+            movie = movies[indexPath.row]
+        }
 
         cell.titleLabel.text = movie["title"] as? String
         cell.synopsisLabel.text = movie["synopsis"] as? String
@@ -56,7 +111,16 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        performSegueWithIdentifier("Movie Detail", sender: movies[indexPath.row])
+
+        var movie: NSDictionary
+
+        if tableView == searchDisplayController!.searchResultsTableView {
+            movie = filteredMovies[indexPath.row]
+        } else {
+            movie = movies[indexPath.row]
+        }
+
+        performSegueWithIdentifier("Movie Detail", sender: movie)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {

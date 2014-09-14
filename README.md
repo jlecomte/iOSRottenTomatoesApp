@@ -30,4 +30,4 @@ Additional Requirements
 Screen Capture
 --------------
 
-TODO :)
+![Screen capture](ScreenCapture.gif)

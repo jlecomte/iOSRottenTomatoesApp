@@ -17,15 +17,23 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" placeholder="Search" id="8BE-k7-rT5">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="vXZ-lx-hvc" id="ImL-9X-bIi"/>
+                                    </connections>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="133" id="TcA-iF-caD" customClass="MovieCell" customModule="RottenTomatoes" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TcA-iF-caD" id="E3S-8S-mLf">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Q8h-XV-wnG">
-                                                    <rect key="frame" x="87" y="8" width="225" height="21"/>
+                                                    <rect key="frame" x="87" y="8" width="206" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                     <color key="textColor" red="0.83462126358695654" green="0.66462129295693029" blue="0.4344875940915684" alpha="1" colorSpace="calibratedRGB"/>
@@ -42,6 +50,10 @@
                                                     <rect key="frame" x="8" y="8" width="71" height="116.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-right-icon-32" id="0Tu-LD-KbS">
+                                                    <rect key="frame" x="296" y="8" width="16" height="16"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
@@ -53,21 +65,37 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="84K-MJ-gg8">
+                                <rect key="frame" x="144" y="263" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                     </view>
                     <navigationItem key="navigationItem" title="Movies" id="nZQ-CE-KEm"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="84K-MJ-gg8" id="88o-61-xZA"/>
+                        <outlet property="searchBar" destination="8BE-k7-rT5" id="H2z-Qx-bam"/>
+                        <outlet property="searchDisplayController" destination="D1T-So-ryb" id="Umw-Kd-0sI"/>
                         <outlet property="tableView" destination="oCi-zu-yGn" id="BAZ-p1-Q5w"/>
                         <segue destination="ulI-kg-2ft" kind="push" identifier="Movie Detail" id="PXA-a1-zoY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="D1T-So-ryb">
+                    <connections>
+                        <outlet property="delegate" destination="vXZ-lx-hvc" id="sFh-RR-wXW"/>
+                        <outlet property="searchBar" destination="8BE-k7-rT5" id="xD3-Ll-kEk"/>
+                        <outlet property="searchContentsController" destination="vXZ-lx-hvc" id="0di-sT-0Qv"/>
+                        <outlet property="searchResultsDataSource" destination="vXZ-lx-hvc" id="N59-GP-uaY"/>
+                        <outlet property="searchResultsDelegate" destination="vXZ-lx-hvc" id="rcE-3i-Cqa"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="648" y="361"/>
         </scene>
-        <!--Title-->
+        <!--Movie Detail-->
         <scene sceneID="UBd-Ip-M0L">
             <objects>
                 <viewController id="ulI-kg-2ft" customClass="MovieDetailViewController" customModule="RottenTomatoes" customModuleProvider="target" sceneMemberID="viewController">
@@ -103,7 +131,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="5Mq-7W-sOw"/>
+                    <navigationItem key="navigationItem" title="Movie Detail" id="5Mq-7W-sOw"/>
                     <connections>
                         <outlet property="posterView" destination="E3T-H4-lOv" id="0JK-ah-Afo"/>
                         <outlet property="synopsisLabel" destination="70k-tm-xJm" id="NJB-1d-m2N"/>
@@ -137,6 +165,9 @@
             <point key="canvasLocation" x="232" y="361"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="arrow-right-icon-32" width="32" height="32"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
