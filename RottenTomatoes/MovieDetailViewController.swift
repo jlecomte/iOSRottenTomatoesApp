@@ -12,6 +12,7 @@ class MovieDetailViewController: UIViewController {
 
     @IBOutlet weak var posterView: UIImageView!
     @IBOutlet weak var synopsisLabel: UILabel!
+    @IBOutlet weak var synopsisViewContainer: UIView!
 
     var movieTitle = ""
     var synopsis = ""
@@ -19,6 +20,19 @@ class MovieDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Stretch the views, in code since I don't know how to use auto layout and other fancy iOS features :)
+
+        var h = synopsisViewContainer.frame.height
+        var y = view.frame.height - h
+        var w = view.frame.width
+        synopsisViewContainer.frame = CGRectMake(0, y, w, h)
+
+        var x = synopsisLabel.frame.origin.x
+        y = synopsisLabel.frame.origin.y
+        w = view.frame.width - 2 * x
+        h = synopsisLabel.frame.height
+        synopsisLabel.frame = CGRectMake(x, y, w, h)
 
         title = movieTitle
         synopsisLabel.text = synopsis

@@ -70,7 +70,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         var posters = movie["posters"] as NSDictionary
         var posterUrl = posters["original"] as String
 
-        // TODO: replace '_tmb.' by '_ori.' (?)
+        // replace '_tmb.' by '_ori.'
+        posterUrl = posterUrl.stringByReplacingOccurrencesOfString("_tmb.", withString: "_ori.", options: nil, range: nil)
 
         vc.posterUrl = posterUrl
     }
