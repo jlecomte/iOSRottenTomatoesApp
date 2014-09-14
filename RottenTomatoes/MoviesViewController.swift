@@ -14,6 +14,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
+    var refreshControl: UIRefreshControl!
+
     var movies: [NSDictionary] = []
     var filteredMovies: [NSDictionary] = []
 
@@ -23,19 +25,30 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.delegate = self
         tableView.dataSource = self
 
+        refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh...")
+        refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.addSubview(refreshControl)
+
         activityIndicator.center = view.center
         activityIndicator.startAnimating()
+
         tableView.hidden = true
 
+        fetchMovies(false)
+    }
+
+    func fetchMovies(pullToRefresh: Bool) {
         var url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=4jvsq52hmsc9vsngu6ewrqku&limit=50&country=us"
 
         var request = NSURLRequest(URL: NSURL(string: url))
 
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
-        (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             var hasError = false
 
             self.activityIndicator.stopAnimating()
+            self.refreshControl.endRefreshing()
 
             if error == nil {
                 var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
@@ -60,6 +73,12 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+
+    func refresh(sender:AnyObject) {
+        movies = []
+        tableView.reloadData()
+        fetchMovies(true)
     }
 
     func filterContentForSearchText(searchText: String) {
